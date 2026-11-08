@@ -1,55 +1,56 @@
-AI-Powered Phishing Detector 🛡️
-An integrated machine learning solution designed to identify phishing attempts across two primary vectors: Malicious URLs and Scam Emails. This project uses Natural Language Processing (NLP) and supervised learning to classify content as "Safe" or "Phishing."
+# AI Phishing Detector 🛡️
 
-🚀 Features
-Email Classifier: Detects fraudulent patterns in email body text using TF-IDF vectorization.
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
+![scikit-learn](https://img.shields.io/badge/scikit--learn-F7931E?style=flat-square&logo=scikitlearn&logoColor=white)
+![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=flat-square&logo=streamlit&logoColor=white)
 
-URL Analyzer: Evaluates website links based on structural features.
+A machine learning app that detects phishing in two places: **suspicious URLs** and **scam emails**.
+Paste a link or an email and it labels it as **Safe** or **Phishing** instantly.
 
-Dual-Model Architecture: Uses pre-trained .pkl models for fast, real-time inference.
+## Features
 
-Jupyter Notebook: Includes system.ipynb for the full data analysis and training pipeline.
+- **URL analyzer:** extracts structural features from a link (length, symbols, subdomains and so on), scales them and classifies it
+- **Email classifier:** turns email text into TF-IDF vectors and classifies it with an NLP model
+- **Two trained models** saved as `.pkl` files for instant predictions, with no retraining needed
+- **Simple web UI** built with Streamlit
+- **Full training notebook** (`code/system.ipynb`) covering data cleaning, exploration, training and evaluation
 
-📂 Project Structure
-Plaintext
+## How it works
 
-├── datasets/           # Training data (CSV files)
-├── models/             # Saved model weights (.pkl)
-├── notebooks/          # Training and EDA scripts (system.ipynb)
-├── app.py              # Main application entry point
-└── requirements.txt    # Project dependencies
-🛠️ Installation & Setup
-Clone the repository:
+```
+URL   ──► feature extraction ──► scaler ──► URL model   ──┐
+                                                          ├──► Safe / Phishing
+Email ──► text cleaning ──► TF-IDF vectorizer ──► email model ──┘
+```
 
-Bash
+## Getting started
 
-git clone https://github.com/your-username/your-repo-name.git](https://github.com/ahmedjavedcodes/ai-phishing-detector.git
-cd AI-Powered-Phishing-Detector
-Create a virtual environment (Recommended):
+```bash
+git clone https://github.com/Zotriq/ai-phishing-detector.git
+cd ai-phishing-detector
+pip install streamlit scikit-learn joblib numpy pandas
 
-Bash
+cd code
+streamlit run app.py
+```
 
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-Install dependencies:
+Run the app from inside `code/`, because that's where the trained model files are.
 
-Bash
+## Project structure
 
-pip install -r requirements.txt
-📊 How it Works
-Data Preprocessing: The system cleans text by removing stop words and special characters.
+```
+code/
+  app.py                  Streamlit app
+  system.ipynb            Data analysis and model training
+  url_model.pkl           URL classifier
+  url_scaler.pkl          URL feature scaler
+  email_model.pkl         Email classifier
+  email_vectorizer.pkl    TF-IDF vectorizer
+datasets/
+  dataseturl.csv          Labeled URL dataset
+  emailscam.csv           Labeled email dataset
+```
 
-Vectorization: Emails are converted into numerical data using a Vectorizer.
+## Tech stack
 
-Prediction: The models (email_model.pkl and url_model.pkl) output a probability score.
-
-Result: The application returns a "Phishing" or "Legitimate" label.
-
-🤖 Technologies Used
-Python (Core Logic)
-
-Scikit-Learn (Machine Learning)
-
-Pandas/NumPy (Data Manipulation)
-
-NLTK (Natural Language Processing)
+Python · scikit-learn · pandas · NumPy · Streamlit · joblib
