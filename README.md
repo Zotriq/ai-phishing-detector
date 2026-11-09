@@ -9,8 +9,9 @@ Paste a link or an email and it labels it as **Safe** or **Phishing** instantly.
 
 ## Features
 
-- **URL analyzer:** extracts structural features from a link (length, symbols, subdomains and so on), scales them and classifies it
-- **Email classifier:** turns email text into TF-IDF vectors and classifies it with an NLP model
+- **URL analyzer:** measures 10 warning signs straight from the link (raw IP, `@` tricks, look-alike hyphens, stacked subdomains, shorteners, missing HTTPS…) and classifies it with a Random Forest (90.5% accuracy on held-out data), plus a rule layer for red flags that are dangerous on their own
+- **Explains every verdict:** Safe / Suspicious / Phishing, with the reasons in plain English
+- **Email classifier:** turns email text into word-count vectors and classifies it with a Naive Bayes model, and shows the scam-typical words it found
 - **Two trained models** saved as `.pkl` files for instant predictions, with no retraining needed
 - **Simple web UI** built with Streamlit
 - **Full training notebook** (`code/system.ipynb`) covering data cleaning, exploration, training and evaluation
@@ -18,9 +19,9 @@ Paste a link or an email and it labels it as **Safe** or **Phishing** instantly.
 ## How it works
 
 ```
-URL   ──► feature extraction ──► scaler ──► URL model   ──┐
+URL   ──► 10 link features ──► Random Forest + red-flag rules ──┐
                                                           ├──► Safe / Phishing
-Email ──► text cleaning ──► TF-IDF vectorizer ──► email model ──┘
+Email ──► word counts ──► Naive Bayes ─────────────────────────┘
 ```
 
 ## Getting started
@@ -41,9 +42,11 @@ Run the app from inside `code/`, because that's where the trained model files ar
 ```
 code/
   app.py                  Streamlit app
+  detector.py             Detection logic shared by the app and the live demo
+  url_features.py         The 10 URL features and their plain-English explanations
+  train_url_model.py      Retrains url_model.pkl (python train_url_model.py)
   system.ipynb            Data analysis and model training
   url_model.pkl           URL classifier
-  url_scaler.pkl          URL feature scaler
   email_model.pkl         Email classifier
   email_vectorizer.pkl    TF-IDF vectorizer
 datasets/
